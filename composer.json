@@ -1,0 +1,24 @@
+{
+    "name": "liaosp/flexwire",
+    "description": "build your app quickly",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "廖圣平",
+            "email": "1194008361@qq.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Liaosp\\Flexwire\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Liaosp\\Flexwire\\ServiceProvider"
+            ]
+        }
+    }
+}
