@@ -4,7 +4,7 @@ namespace Liaosp\Flexwire\Component;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
-use Liaosp\Flexwire\layout\Content;
+use Liaosp\Flexwire\Layout\Content;
 use Liaosp\Flexwire\Services\Async;
 use Liaosp\Flexwire\Services\ToolService;
 

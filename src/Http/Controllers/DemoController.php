@@ -10,9 +10,9 @@ use Liaosp\Flexwire\Component\Button;
 use Liaosp\Flexwire\Component\Card;
 use Liaosp\Flexwire\Component\CardItem;
 use Liaosp\Flexwire\Component\Tab;
-use Liaosp\Flexwire\layout\Column;
-use Liaosp\Flexwire\layout\Content;
-use Liaosp\Flexwire\layout\Row;
+use Liaosp\Flexwire\Layout\Column;
+use Liaosp\Flexwire\Layout\Content;
+use Liaosp\Flexwire\Layout\Row;
 use Liaosp\Flexwire\Services\Async;
 use Liaosp\Flexwire\Widgets\Profiles\ProfileSimple;
 

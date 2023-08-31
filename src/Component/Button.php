@@ -3,7 +3,7 @@
 namespace Liaosp\Flexwire\Component;
 
 use Illuminate\Contracts\Support\Renderable;
-use Liaosp\Flexwire\layout\Content;
+use Liaosp\Flexwire\Layout\Content;
 
 class Button extends ComponentAbstract implements Renderable
 {

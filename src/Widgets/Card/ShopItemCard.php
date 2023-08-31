@@ -5,8 +5,8 @@ namespace Liaosp\Flexwire\Widgets\Profiles;
 use Illuminate\Contracts\Support\Renderable;
 use Liaosp\Flexwire\Component\Cell;
 use Liaosp\Flexwire\Component\Image;
-use Liaosp\Flexwire\layout\Column;
-use Liaosp\Flexwire\layout\Row;
+use Liaosp\Flexwire\Layout\Column;
+use Liaosp\Flexwire\Layout\Row;
 use Liaosp\Flexwire\Widgets\WidgetAbstract;
 
 class ShopItemCard extends WidgetAbstract implements Renderable

@@ -3,7 +3,7 @@
 namespace Liaosp\Flexwire\Services;
 
 use Illuminate\Contracts\Support\Renderable;
-use Liaosp\Flexwire\layout\Content;
+use Liaosp\Flexwire\Layout\Content;
 
 class Async implements Renderable
 {

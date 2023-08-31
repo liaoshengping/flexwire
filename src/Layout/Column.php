@@ -1,6 +1,6 @@
 <?php
 
-namespace Liaosp\Flexwire\layout;
+namespace Liaosp\Flexwire\Layout;
 
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
