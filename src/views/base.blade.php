@@ -122,10 +122,17 @@
 
 
     function getUrlParams(url) {
+
+        let obj = {};
+
+        if(url.indexOf('?') == -1 ){
+            return obj;
+        }
+
         // 通过 ? 分割获取后面的参数字符串
         let urlStr = url.split('?')[1]
         // 创建空对象存储参数
-        let obj = {};
+
         // 再通过 & 将每一个参数单独分割出来
         let paramsArr = urlStr.split('&')
         for(let i = 0,len = paramsArr.length;i < len;i++){
