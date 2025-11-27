@@ -8,7 +8,7 @@
     {{--    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"--}}
     <meta name="description" content="{{$description??''}}"/>
     <meta name="keywords" content="{{$keywords??''}}"/>
-    <link href="/css/vant2.css" type="text/css"
+    <link href="/vendor/flexware/vant2.css" type="text/css"
           rel="stylesheet"/>
 
 </head>
@@ -100,11 +100,11 @@
 
 
 {{--替换方案： https://www.staticfile.org/--}}
-<script src="/js/vue2.js"
+<script src="/vendor/flexware/vue2.js"
         type="application/javascript"></script>
-<script src="/js/vant2.js"
+<script src="/vendor/flexware/vant2.js"
         type="application/javascript"></script>
-<script src="/js/axios.js"
+<script src="/vendor/flexware/axios.js"
         type="application/javascript"></script>
 
 

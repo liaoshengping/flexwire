@@ -12,6 +12,13 @@ $ composer require liaosp/flexwire -vvv
 ## Usage
 
 ````
+php artisan vendor:publish --tag=flexware-assets
+````
+
+
+# Demo
+
+````
 class FormController
 {
     public function resetCode()
