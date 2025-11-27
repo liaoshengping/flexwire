@@ -62,6 +62,8 @@ class Row implements Renderable
         $column = new Column($content, $width);
 
         $this->addColumn($column);
+
+        return $this;
     }
 
     public function body($content)

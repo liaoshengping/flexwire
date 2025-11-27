@@ -4,7 +4,7 @@ const requestData = Object.assign({}, getUrlParams(window.location.href));
 requestData['currentFunction'] = '{{$class}}'
 this.{{$key}}_LOADING = true;
 this.{{$key}}_PAGE ++;
-{{$requestParams}}
+{{$requestParams??''}}
 let then = this;
 axios.get('',{
 params:requestData

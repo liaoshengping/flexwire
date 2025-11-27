@@ -8,7 +8,8 @@
     {{--    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"--}}
     <meta name="description" content="{{$description??''}}"/>
     <meta name="keywords" content="{{$keywords??''}}"/>
-
+    <link href="/css/vant2.css" type="text/css"
+          rel="stylesheet"/>
 
 </head>
 
@@ -52,7 +53,10 @@
     }
 
     body {
-        background-color: #f5f5f5;
+        background-color: {{$backgroup_color??'#f5f5f5'}};
+        max-width: 375px; /* 设置最大宽度为手机屏幕的宽度 */
+        margin: 0 auto; /* 居中显示 */
+
     }
 
     .title {
@@ -87,15 +91,23 @@
         </div>
     </van-pull-refresh>
 
+    {!! $endContent !!}
+
+    {!! $tabBar !!}
+
 </div>
-<link href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-5-y/vant/2.12.44/index.min.css" type="text/css"
-      rel="stylesheet"/>
-<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-12-M/vue/2.6.14/vue.min.js"
+
+
+
+{{--替换方案： https://www.staticfile.org/--}}
+<script src="/js/vue2.js"
         type="application/javascript"></script>
-<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-5-y/vant/2.12.44/vant.min.js"
+<script src="/js/vant2.js"
         type="application/javascript"></script>
-<script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-5-y/axios/0.26.0/axios.min.js"
+<script src="/js/axios.js"
         type="application/javascript"></script>
+
+
 
 <script>
 
@@ -187,6 +199,9 @@
             },
             onRefresh() {
                 location.reload();
+            },
+            getData(){
+                return this.$data
             },
 
 

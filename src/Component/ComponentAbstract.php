@@ -10,12 +10,12 @@ abstract class ComponentAbstract implements Renderable
 
     public function __construct()
     {
-        if (method_exists($this,'method')){
-            Content::addMethodString($this->method()??'');
+        if (method_exists($this, 'method')) {
+            Content::addMethodString($this->method() ?? '');
         }
 
-        if (method_exists($this,'initJs')){
-            Content::addInitJs($this->initJs()??'');
+        if (method_exists($this, 'initJs')) {
+            Content::addInitJs($this->initJs() ?? '');
         }
 
 
@@ -25,15 +25,18 @@ abstract class ComponentAbstract implements Renderable
 
     protected $props = [];
 
+    protected $clickName;
 
-    public function method(){
+
+    public function method()
+    {
 
     }
 
-    public function initJs(){
+    public function initJs()
+    {
 
     }
-
 
 
     /**
@@ -45,7 +48,7 @@ abstract class ComponentAbstract implements Renderable
             $content = $content->render();
         }
 
-        $this->content = $content;
+        $this->content .= $content;
         return $this;
     }
 
@@ -84,6 +87,14 @@ abstract class ComponentAbstract implements Renderable
     public static function make(...$params)
     {
         return new static(...$params);
+    }
+
+
+    public function click($content)
+    {
+        $this->clickName = $content->clickName();
+        Content::addEndContent($content->render());
+        return $this;
     }
 
 

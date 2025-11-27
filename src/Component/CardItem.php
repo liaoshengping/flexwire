@@ -15,9 +15,7 @@ class CardItem extends ComponentAbstract
 
     public function render()
     {
-        $render = ' <div style="margin-bottom: 10px"><van-card
-  {{props}}
->
+        $render = ' <div style="margin-bottom: 10px"><van-card {{props}} >
  {{tags}}
  {{footer}}
  {{bottom}}
@@ -27,7 +25,7 @@ class CardItem extends ComponentAbstract
             $render = str_replace('{{props}}', $this->getPropsString(), $render);
         }
 
-        foreach (['tags','footer','bottom'] as $obj){
+        foreach (['tags', 'footer', 'bottom'] as $obj) {
             $objString = '';
             if ($this->{$obj}) {
                 if ($this->{$obj} instanceof Renderable) {
@@ -35,12 +33,12 @@ class CardItem extends ComponentAbstract
                 } else {
                     $objString = $this->{$obj};
                 }
-                $render = str_replace('{{'.$obj.'}}', '
-<template #'.$obj.'>
-   '.$objString.'
+                $render = str_replace('{{' . $obj . '}}', '
+<template #' . $obj . '>
+   ' . $objString . '
 </template>', $render);
             }
-            $render = str_replace('{{'.$obj.'}}', $objString, $render);
+            $render = str_replace('{{' . $obj . '}}', $objString, $render);
         }
         return $render;
     }
@@ -51,7 +49,11 @@ class CardItem extends ComponentAbstract
      */
     public function setTags($tags)
     {
-        $this->tags = $tags;
+        if ($tags instanceof Renderable) {
+            $tags = $tags->render();
+        }
+
+        $this->tags .= "$tags";
         return $this;
     }
 

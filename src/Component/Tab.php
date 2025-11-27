@@ -28,9 +28,9 @@ class Tab extends ComponentAbstract implements Renderable
             'tableRelationAsync' => $this->tableRelationAsync,
         ]);
 
-
+//        animated
         $html = <<<HTML
-<van-tabs v-model="$this->activeName" @click="tabClick" >
+<van-tabs  v-model="$this->activeName" @click="tabClick" >
  {{tab}}
 </van-tabs>
 HTML;
@@ -42,6 +42,12 @@ HTML;
         }
 
         $html = str_replace('{{tab}}', $string, $html);
+
+        $html = '<div class="van-row" >
+<div class="van-row" >
+'.$html.'
+</div>
+</div>';
 
 
         return $html;

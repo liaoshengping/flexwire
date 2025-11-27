@@ -47,18 +47,26 @@ class Cell extends ComponentAbstract implements Renderable
 
     public function buildCell($title, $value)
     {
-        $cell = '<van-cell title="' . $title . '" value="' . $value . '" {{props}} ></van-cell>
+        $cell = '<van-cell title="' . $title . '" value="' . $value . '" {{props}} {{click}} ></van-cell>
 ';
         $temp = '';
 
         foreach ($this->props as $key => $value) {
             $temp .= $key . '=' . $value . ' ';
         }
+
         $cell = str_replace('{{props}}', $temp, $cell);
+
+        $clickString = '';
+
+        if ($this->clickName) {
+            $clickString = '@click="' . $this->clickName . '()"';
+        }
+
+        $cell = str_replace('{{click}}', $clickString, $cell);
 
         return $cell;
     }
-
 
 
     /**
@@ -100,5 +108,19 @@ class Cell extends ComponentAbstract implements Renderable
     public function method()
     {
         // TODO: Implement method() method.
+    }
+
+    public function isLink()
+    {
+        $this->props['is-link'] = 1;
+
+        return $this;
+    }
+
+
+    public function icon($icon = 'guide-o')
+    {
+        $this->props['icon'] = $icon;
+        return $this;
     }
 }

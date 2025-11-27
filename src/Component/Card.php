@@ -14,10 +14,12 @@ class Card extends ComponentAbstract implements Renderable
 
     protected $titleMode = self::TITLE_MODEL_INSIDE;
 
+    protected $margin = '10px';
+
     /**
      * @var string
      */
-    protected $cardStyle = 'margin: 10px;background-color: white;padding: 10px;border-radius: 10px';
+    protected $cardStyle = '{{margin}} background-color: white;padding: 10px;border-radius: 10px';
 
 
     public function __construct($title = '', $content = null)
@@ -31,6 +33,7 @@ class Card extends ComponentAbstract implements Renderable
 
     }
 
+
     public function render()
     {
         $card = '';
@@ -38,6 +41,8 @@ class Card extends ComponentAbstract implements Renderable
         if ($this->titleMode == self::TITLE_MODEL_INSIDE) {
             $card .= "<div class='van-row' style='width: 100%;padding-left:10px;margin-top:10px;color: rgba(69, 90, 100, 0.6)'>$this->title</div>";
         }
+
+        $this->cardStyle = str_replace('{{margin}}', 'margin: ' . $this->margin . ';', $this->cardStyle);
 
         $card .= "<div class='van-row' style='$this->cardStyle'>$this->content</div>";
 
@@ -95,4 +100,17 @@ class Card extends ComponentAbstract implements Renderable
     {
         // TODO: Implement method() method.
     }
+
+    public function margin($margin)
+    {
+        $this->margin = $margin;
+        return $this;
+    }
+
+    public function notMargin()
+    {
+        $this->margin = '';
+        return $this;
+    }
+
 }

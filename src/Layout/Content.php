@@ -2,15 +2,20 @@
 
 namespace Liaosp\Flexwire\Layout;
 
-
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Arr;
 use Liaosp\Flexwire\Services\Async;
+use Liaosp\Flexwire\Services\Form;
+use Liaosp\Flexwire\Services\TabBar;
 use Liaosp\Flexwire\Services\ToolService;
 
 class Content implements Renderable
 {
+
+
+    public static $tabBar;
 
     /**
      * @var string
@@ -47,15 +52,24 @@ class Content implements Renderable
     protected $rows;
 
 
-    static $jsPrams = [];
+    public static $jsPrams = [];
 
 
-    static $vueData = [];
+    public static $vueData = [];
 
 
-    static $method = '';
+    public static $method = '';
 
-    static $initJs = '';
+    public static $initJs = '';
+
+    public static $endContent = '';
+
+    protected $showTabBar = false;
+
+    protected $backgroupColor = 'gray';
+
+
+    protected $attributeData = [];
 
 
     /**
@@ -73,15 +87,144 @@ class Content implements Renderable
         return $this->row($content);
     }
 
+    public function add($content)
+    {
+        $this->rows[] = $content;
+        return $this;
+    }
+
 
     public function render()
     {
         if (request()->expectsJson()) {
             return $this->jsonRender();
         }
+
+        $tabBar = '';
+        if ($this->showTabBar) {
+            $tabBar = !empty(self::$tabBar) ? self::$tabBar->render() : (new TabBar())->render();
+        }
+//        <van-swipe :autoplay="3000">
+//  <van-swipe-item v-for="(image, index) in images" :key="index">
+//    <img v-lazy="image" />
+//  </van-swipe-item>
+//</van-swipe>
         $html = '';
         foreach ($this->rows as $row) {
-            $html .= $row->render();
+
+            $rowType = '';
+            if (is_array($row)) {
+                $rowType = $row['type'] ?? '';
+            }
+
+            switch ($rowType) {
+                case 'block':
+                    $html .= '<br>';
+                    break;
+                case 'banner':
+                    $swipeItem = '';
+                    foreach ($row['images'] as $itemImage){
+                        $swipeItem.=' <van-swipe-item><image height="100%" width="100%"
+  src="'.$itemImage.'"
+/></van-swipe-item>';
+                    }
+
+                    $html .= '<van-swipe style="height: 200px;" :autoplay="3000">
+  '.$swipeItem.'
+</van-swipe>';
+                    break;
+            }
+
+            if ($row instanceof Form) {
+                /**
+                 * @var Form $row
+                 */
+                $formResult = $row->render();
+                if ($row->content) {
+                    foreach ($row->content as $item) {
+                        $formData = $row->data();
+                        self::addVueData([$formResult['class_name'] . '_confirm' => $formResult['confirm']]);
+                        if (empty($item['type'])) continue;
+                        switch ($item['type']) {
+                            case 'text':
+                                if (empty($item['filed'])) continue 2;
+                                $html .= '
+                                <van-field v-model="' . $item['filed'] . '" label="' . $item['name'] . '" placeholder="请输入" /></van-field>';
+                                $formThisDataValue = Arr::get($formData, $item['filed'],'');
+                                self::addVueData([$item['filed'] => $formThisDataValue]);
+                                break;
+                            case 'submit':
+                                $htmlName = $item["name"];
+                                $functionFullName = $formResult['class_name'] . "('" . $formResult["class"] . "')";
+                                $functionName = $formResult['class_name'];
+                                $functionNameConfirm = $formResult['class_name'] . '_confirm';
+                                $confirm = $formResult['confirm'];
+                                $html .= <<<HTML
+<van-button @click="$functionFullName" style="margin-top: 20px" block  type="primary">$htmlName</van-button>
+HTML;
+                                $dialog = '$dialog';
+                                self::$method .= <<<TEXT
+{$functionName}(class_name) {
+const postData = {
+                class_name: class_name,
+            };
+
+      allData = this.getData();
+      newData = {...postData,...allData}
+      that = this
+            // 使用 Axios 发送 POST 请求
+            if(this.$functionNameConfirm){
+
+             that.$dialog.confirm({
+                    title: '提示',
+                    message: "$confirm",
+                }).then(() => {
+                 axios.post('/flexwire/get-service2', newData)
+                .then(function (response) {
+                    that.$dialog.alert({
+                    title: '提示',
+                    message: response.data.msg,
+                })
+                })
+                .catch(function (error) {
+                    // 请求失败时执行的代码
+                    console.error('Error:', error);
+
+                });
+                });
+            }else{
+                axios.post('/flexwire/get-service2', newData)
+                .then(function (response) {
+                    that.$dialog.alert({
+                    title: '提示',
+                    message: response.data.msg,
+                })
+                })
+                .catch(function (error) {
+                    // 请求失败时执行的代码
+                    console.error('Error:', error);
+
+                });
+
+            }
+
+
+},
+TEXT;
+
+                                break;
+                        }
+
+                    }
+                }
+
+            } else {
+
+                if (is_object($row) && method_exists($row, 'render')) {
+                    $html .= $row->render();
+                }
+
+            }
         }
         $method = self::$method;
         $jsParams = self::$jsPrams;
@@ -128,17 +271,31 @@ class Content implements Renderable
                 $item = ToolService::format($item);
             }
 
+            if ($item === false) {
+                $item = 'false';
+            }
+
+            if ($item === true) {
+                $item = 'true';
+            }
+
+
             $vueData .= $key . ':' . $item . ',' . PHP_EOL;
         }
 
 
-        return view($this->view, array_merge($value, [
+        $withData = array_merge($value ?? [], [
             'content' => $html,
             'title' => $this->title,
             'method' => $method,
             'vueData' => $vueData,
             'init' => $initFunction,
-        ]));
+            'endContent' => self::$endContent,
+            'tabBar' => $tabBar,
+        ]);
+
+
+        return view($this->view, array_merge($withData, $this->attributeData));
     }
 
 
@@ -183,6 +340,24 @@ class Content implements Renderable
         $this->rows[] = $row;
     }
 
+    public function block($height = 15)
+    {
+        $this->rows[] = [
+            'type' => 'block',
+            'height' => $height
+        ];
+        return $this;
+    }
+
+    public function banner($images)
+    {
+        $this->rows[] = [
+            'type' => 'banner',
+            'images' => $images
+        ];
+        return $this;
+    }
+
 
     /**
      * Add one row for content body.
@@ -196,7 +371,8 @@ class Content implements Renderable
             call_user_func($content, $row);
             $this->addRow($row);
         } else {
-            $this->addRow(new Row($content));
+            $row = new Row($content);
+            $this->addRow($row);
         }
 
         return $this;
@@ -237,6 +413,37 @@ class Content implements Renderable
     public static function addInitJs($js)
     {
         self::$initJs .= $js . PHP_EOL;
+    }
+
+    public static function addEndContent($content)
+    {
+        self::$endContent .= $content;
+    }
+
+
+    public function disableShowTabBar()
+    {
+        $this->showTabBar = false;
+        return $this;
+
+    }
+
+    public function showTabBar()
+    {
+        $this->showTabBar = true;
+
+        return $this;
+    }
+
+    /**
+     * @param string $backgroupColor
+     * @return Content
+     */
+    public function setBackgroupColor(string $backgroupColor): Content
+    {
+        $this->attributeData['backgroup_color'] = $backgroupColor;
+
+        return $this;
     }
 
 

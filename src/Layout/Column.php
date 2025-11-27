@@ -9,7 +9,7 @@ use Liaosp\Flexwire\Services\ToolService;
 /**
  * https://vant-contrib.gitee.io/vant/v2/#/zh-CN/col
  */
-class Column implements Renderable
+class Column extends Row implements Renderable
 {
     /**
      * grid system prefix width.
@@ -138,6 +138,10 @@ class Column implements Renderable
 //            return $value == 0 ? "col-$key" : "col-$key-$value";
 //        })->implode(' ');
 //        var_dump($this->width);exit;
+
+
+
+
         if ($this->width == 0) {
             $div = "<div style='{{style}}'>
 ";
@@ -156,8 +160,17 @@ class Column implements Renderable
 
             return $div;
         }
-        return "<van-col span='$this->width' >
+
+
+        $row =  "<van-col span='$this->width' {{params}} >
 ";
+
+        $replace = '';
+        if ($this->flex) {
+            $replace = "type='$this->type' justify='$this->justify'";
+        }
+
+        return str_replace("{{params}}", $replace, $row);
     }
 
 
