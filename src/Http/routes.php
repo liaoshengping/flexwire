@@ -7,4 +7,6 @@ Route::get('/form', [\Liaosp\Flexwire\Http\Controllers\FormController::class,'re
 Route::post('/async', [\Liaosp\Flexwire\Http\Controllers\GetServiceController::class,'handle']);
 
 Route::post('/get-service', [\Liaosp\Flexwire\Http\Controllers\GetServiceController::class,'handle']);
-Route::post('/get-service2', [\Liaosp\Flexwire\Http\Controllers\GetServiceController::class,'handle2']);
+
+#获取config数据
+Route::middleware(config('flexwire.middleware'))->post('/get-service2', [\Liaosp\Flexwire\Http\Controllers\GetServiceController::class,'handle2']);

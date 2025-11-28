@@ -9,6 +9,8 @@ class Button extends ComponentAbstract implements Renderable
 {
     protected $text = "输入名称";
     protected $href = "";
+    protected $type = 'primary';
+    protected $plain='';
 
     protected $jsParams = [];
 
@@ -26,7 +28,13 @@ class Button extends ComponentAbstract implements Renderable
 
     public function render()
     {
-        $button = "<van-button @click='event$this->id()' type=\"primary\" {{props}}  >$this->text</van-button>";
+
+        if (empty($this->props['size'])) {
+            $this->sizeLarge();
+        }
+
+
+        $button = "<van-button $this->plain style=\"margin-top: 10px\" @click='event$this->id()' type=\"$this->type\" {{props}}  >$this->text</van-button>";
 
         if ($this->href) {
             $button = "<a href='$this->href'>$button</a>";
@@ -56,6 +64,13 @@ class Button extends ComponentAbstract implements Renderable
     public function href($href)
     {
         $this->href = $href;
+        return $this;
+    }
+
+    public function plain()
+    {
+        $this->plain = 'plain';
+        return $this;
     }
 
     /**
@@ -109,6 +124,36 @@ class Button extends ComponentAbstract implements Renderable
         return $this;
     }
 
+    public function typePrimary()
+    {
+        $this->type = 'primary';
+        return $this;
+    }
+
+    public function typeWarning()
+    {
+        $this->type = 'warning';
+        return $this;
+    }
+
+    public function typeDefault()
+    {
+        $this->type = 'default';
+        return $this;
+    }
+
+    public function typeInfo()
+    {
+        $this->type = 'info';
+        return $this;
+    }
+
+    public function typeDanger()
+    {
+        $this->type = 'danger';
+        return $this;
+    }
+
     public function sizeMini()
     {
         $this->props['size'] = 'mini';
@@ -133,6 +178,11 @@ class Button extends ComponentAbstract implements Renderable
     {
         $this->props['size'] = 'large';
         return $this;
+
+    }
+
+    public function callback(\Closure $callback)
+    {
 
     }
 

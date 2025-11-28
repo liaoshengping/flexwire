@@ -12,7 +12,8 @@ $ composer require liaosp/flexwire -vvv
 ## Usage
 
 ````
-php artisan vendor:publish --tag=flexware-assets
+php artisan vendor:publish --tag=flexwire-assets
+php artisan vendor:publish --tag=flexwire-config
 ````
 
 
@@ -43,6 +44,66 @@ class FormController
 }
 
 ````
+# Form Demo
+````
+
+<?php
+
+namespace Liaosp\Flexwire\Http\Form;
+
+use App\Models\Code;
+use Illuminate\Support\Carbon;
+use Liaosp\Flexwire\Services\Form;
+use Liaosp\Flexwire\Services\ToolService;
+
+class CodeValidateForm extends Form
+{
+    protected $type = 'form';
+
+
+    public function handle()
+    {
+        $code = request()->input('code');
+    
+    
+        # todo .. your code  ~~~
+           
+
+    }
+
+    public function form()
+    {
+        $this->text('code', '激活码','');
+        $this->submit('重置激活码');
+    }
+
+    public function confirm()
+    {
+        return '重置激活码减少1天有效期';
+    }
+
+}
+
+````
+
+# Grid
+![img.png](docs/img.png)
+````
+    public function index()
+    {
+        $content = Content::make()
+            ->body(Grid::make([
+                GridItem::make('功能1'),
+                GridItem::make('测试2'),
+            ],2));
+        $content->render();
+        return $content;
+    }
+
+````
+
+# 重写路由
+Route::middleware(['h5.auth'])->post('/flexwire/get-service2', [\Liaosp\Flexwire\Http\Controllers\GetServiceController::class,'handle2']);
 
 
 ## Contributing

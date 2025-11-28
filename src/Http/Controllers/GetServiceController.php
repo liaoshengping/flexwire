@@ -14,6 +14,7 @@ class GetServiceController
         return [
             'code' => 200,
             'msg' => $msg,
+            'message' => $msg,
         ];
     }
 
@@ -22,6 +23,7 @@ class GetServiceController
         return [
             'code' => 500,
             'msg' => $msg,
+            'message' => $msg,
         ];
     }
 

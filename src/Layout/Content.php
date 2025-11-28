@@ -153,16 +153,28 @@ class Content implements Renderable
                                 $formThisDataValue = Arr::get($formData, $item['filed'],'');
                                 self::addVueData([$item['filed'] => $formThisDataValue]);
                                 break;
+
+                            case 'textDisable':
+                                if (empty($item['filed'])) continue 2;
+                                $html .= '
+                                <van-field disabled v-model="' . $item['filed'] . '" label="' . $item['name'] . '" placeholder="请输入" /></van-field>';
+                                $formThisDataValue = Arr::get($formData, $item['filed'],'');
+                                self::addVueData([$item['filed'] => $formThisDataValue]);
+                                break;
                             case 'submit':
                                 $htmlName = $item["name"];
                                 $functionFullName = $formResult['class_name'] . "('" . $formResult["class"] . "')";
                                 $functionName = $formResult['class_name'];
                                 $functionNameConfirm = $formResult['class_name'] . '_confirm';
                                 $confirm = $formResult['confirm'];
+                                $color = $item['color'];
                                 $html .= <<<HTML
-<van-button @click="$functionFullName" style="margin-top: 20px" block  type="primary">$htmlName</van-button>
+
+<van-button @click="$functionFullName" style="margin-top: 20px" size="large" type = "$color"  type="primary">$htmlName</van-button>
 HTML;
                                 $dialog = '$dialog';
+                                $showLoading = '$showLoading';
+                                $toast = '$toast';
                                 self::$method .= <<<TEXT
 {$functionName}(class_name) {
 const postData = {
@@ -172,6 +184,15 @@ const postData = {
       allData = this.getData();
       newData = {...postData,...allData}
       that = this
+
+            this.$toast.loading({
+  message: '加载中...',
+  forbidClick: true,
+});
+
+
+
+
             // 使用 Axios 发送 POST 请求
             if(this.$functionNameConfirm){
 
@@ -179,26 +200,40 @@ const postData = {
                     title: '提示',
                     message: "$confirm",
                 }).then(() => {
-                 axios.post('/flexwire/get-service2', newData)
+                 axios.post('/flexwire/get-service2', newData, {
+    withCredentials: true
+})
                 .then(function (response) {
-                    that.$dialog.alert({
-                    title: '提示',
-                    message: response.data.msg,
-                })
+                   that.$toast.clear();
+                    if (response.data.message){
+                       that.$toast(response.data.message)
+                       if (response.data.redirect){
+                            setTimeout(function () {
+                                window.location.href = response.data.redirect;
+                            }, 1000);
+                       }
+                    }
+
                 })
                 .catch(function (error) {
                     // 请求失败时执行的代码
                     console.error('Error:', error);
-
                 });
                 });
             }else{
-                axios.post('/flexwire/get-service2', newData)
+                axios.post('/flexwire/get-service2', newData, {
+    withCredentials: true
+})
                 .then(function (response) {
-                    that.$dialog.alert({
-                    title: '提示',
-                    message: response.data.msg,
-                })
+                    that.$toast.clear();
+                    if (response.data.message){
+                       that.$toast(response.data.message)
+                       if (response.data.redirect){
+                            setTimeout(function () {
+                                window.location.href = response.data.redirect;
+                            }, 1000);
+                       }
+                    }
                 })
                 .catch(function (error) {
                     // 请求失败时执行的代码

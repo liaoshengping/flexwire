@@ -11,11 +11,13 @@ class Form
     public $content = [];
 
 
-    public function success($msg='操作成功')
+    public function success($msg='操作成功',$redirect = '')
     {
         return [
             'code' => 200,
             'msg' => $msg,
+            'message' => $msg,
+            'redirect' => $redirect,
         ];
     }
 
@@ -24,6 +26,7 @@ class Form
         return [
             'code' => 500,
             'msg' => $msg,
+            'message' => $msg,
         ];
     }
 
@@ -36,15 +39,28 @@ class Form
             'default' => $default,
         ];
     }
+    public function textDisable($filed, $name, $default = '')
+    {
+        $this->content[] = [
+            'type' => 'textDisable',
+            'filed' => $filed,
+            'name' => $name,
+            'default' => $default,
+        ];
+    }
 
-    public function submit($name, $url = '')
+
+    public function submit($name, $url = '',$color = 'primary')
     {
         $this->content[] = [
             'type' => 'submit',
             'name' => $name,
             'url' => $url,
+            'color' => $color
         ];
     }
+
+
 
     /**
      * @return array

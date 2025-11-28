@@ -11,7 +11,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
-            $this->publishes([__DIR__.'/../resources/dist' =>  public_path('vendor/flexware'),], 'flexware-assets');
+            $this->publishes([__DIR__.'/../resources/config' => config_path()], 'flexwire-config');
+            $this->publishes([__DIR__.'/../resources/dist' =>  public_path('vendor/flexware'),], 'flexwire-assets');
         }
     }
 
@@ -23,8 +24,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->registerRoute();
 
     }
-
-
 
 
     private function registerRoute(){
@@ -46,6 +45,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 //            'domain' => 'Flexwire',
             'namespace' => 'Liaosp\Flexwire\Http\Controllers',
             'prefix' => 'flexwire',
+            'middleware' => ['web'],
+
 //            'middleware' => '',
         ];
     }
