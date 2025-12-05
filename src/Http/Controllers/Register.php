@@ -33,9 +33,9 @@ class Register
             ->title('注册')
             ->block();
         if ($email) {
-            $content->add(new RegisterForm());
+            $content->add(new \Liaosp\Flexwire\Http\Form\RegisterForm());
         } else {
-            $content->add(new RegisterEmailForm());
+            $content->add(new \Liaosp\Flexwire\Http\Form\RegisterEmailForm());
         }
         $content->block();
         if ($email) {
