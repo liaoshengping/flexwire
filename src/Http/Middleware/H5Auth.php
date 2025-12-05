@@ -9,8 +9,7 @@ use Liaosp\Flexwire\Services\ToolService;
 class H5Auth
 {
     public $notLogin = [
-        'h5/login/index',
-        'h5/register/emailRegister',
+        'flexwire/h5/register/emailRegister',
         'flexwire/h5/login/forgetPassword',
         'flexwire/h5/login/resetPassword',
         'flexwire/h5/login/index',

@@ -120,6 +120,21 @@ Route::prefix('h5')->middleware(['h5.auth'])->group(function (){
 });
 ```
 
+# 发送验证码
+
+请在 .env 配置
+
+ ```
+MAIL_DRIVER=smtp
+MAIL_HOST=smtp.qq.com
+MAIL_PORT=25
+MAIL_USERNAME=xxx@qq.com
+MAIL_PASSWORD=xxx
+MAIL_FROM_NAME=邮箱提醒
+MAIL_FROM_ADDRESS=xxx@qq.com
+MAIL_ENCRYPTION=ssl
+ ``` 
+
 
 ## Contributing
 
