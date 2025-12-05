@@ -1,19 +1,22 @@
 <?php
 namespace Liaosp\Flexwire;
 
+use App\H5\Middleware\H5Auth;
 use Dcat\Admin\Admin;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
 
 
-    public function boot()
+    public function boot(Router $router)
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([__DIR__.'/../resources/config' => config_path()], 'flexwire-config');
             $this->publishes([__DIR__.'/../resources/dist' =>  public_path('vendor/flexware'),], 'flexwire-assets');
         }
+        $router->aliasMiddleware('flexwire.auth', \Liaosp\Flexwire\Http\Middleware\H5Auth::class);
     }
 
 

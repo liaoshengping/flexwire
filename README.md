@@ -103,7 +103,22 @@ class CodeValidateForm extends Form
 ````
 
 # 重写路由
-Route::middleware(['h5.auth'])->post('/flexwire/get-service2', [\Liaosp\Flexwire\Http\Controllers\GetServiceController::class,'handle2']);
+```
+# h5为前缀的
+Route::prefix('h5')->middleware(['h5.auth'])->group(function (){
+    Route::any("/{controller}/{action}",function ($class, $action){
+
+        $class = "App\\H5\\Controllers\\".\Illuminate\Support\Str::studly($class);
+        if(class_exists($class))
+        {
+            $ctrl = \Illuminate\Support\Facades\App::make($class);
+            return \Illuminate\Support\Facades\App::call([$ctrl, $action]);
+        }
+        return abort(404);
+
+    })->where([ 'module'=>'[0-9a-zA-Z]+','class' => '[0-9a-zA-Z]+', 'action' => '[0-9a-zA-Z]+']);
+});
+```
 
 
 ## Contributing

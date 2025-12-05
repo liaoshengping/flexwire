@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use Liaosp\Flexwire\Services\Form;
 use Liaosp\Flexwire\Services\FormInterface;
 
-class RegisterEmailForm extends Form implements FormInterface
+class ForgetPasswordEmailForm extends Form implements FormInterface
 {
     protected string $email;
 
@@ -30,8 +30,9 @@ class RegisterEmailForm extends Form implements FormInterface
         if ($validator->fails()) {
             return $this->fail($validator->errors()->first());
         }
-        if (User::where('username',$this->email)->exists()){
-            throw new \Exception('已注册，请勿重复注册');
+
+        if (!User::where('username',$this->email)->exists()){
+            throw new \Exception('不存在该邮箱');
         };
 
 
@@ -47,13 +48,13 @@ TEXT;
 
         Cache::put($this->email.$code,true,'300');//5分钟激活码
 
-        return $this->success('发送成功','/flexwire/h5/register/emailRegister?email='.$this->email);
+        return $this->success('发送成功','/flexwire/h5/login/resetPassword?email='.$this->email);
     }
 
     public function form()
     {
         $this->text('email','输入邮箱');
-        $this->submit('获取验证码');
+        $this->submit('发送验证码');
     }
 
     public function data()

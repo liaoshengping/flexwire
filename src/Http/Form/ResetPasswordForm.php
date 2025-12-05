@@ -5,7 +5,7 @@ namespace Liaosp\Flexwire\Http\Form;
 use Liaosp\Flexwire\Services\Form;
 use Liaosp\Flexwire\Services\FormInterface;
 
-class RegisterForm extends RegisterEmailForm implements FormInterface
+class ResetPasswordForm extends RegisterEmailForm implements FormInterface
 {
 
     public function handle()
@@ -34,15 +34,14 @@ class RegisterForm extends RegisterEmailForm implements FormInterface
             throw new \Exception('验证码错误，或已过期');
         }
 
-        \App\Models\User::query()->create([
-            'username' => $this->email,
+        \App\Models\User::query()->where('username',$this->email)->update([
             'name' => '用户',
             'password' => bcrypt(request()->input('password')),
             'merchant_id' => 22,
         ]);
 
 
-        return $this->success('注册成功', '/flexwire/h5/login/index');
+        return $this->success('修改成功', '/flexwire/h5/login/index');
 
     }
 
@@ -50,8 +49,8 @@ class RegisterForm extends RegisterEmailForm implements FormInterface
     {
         $this->textDisable('email', '邮箱');
         $this->text('code', '验证码');
-        $this->text('password', '注册密码');
-        $this->submit('注册');
+        $this->text('password', '新密码');
+        $this->submit('修改密码');
     }
 
 

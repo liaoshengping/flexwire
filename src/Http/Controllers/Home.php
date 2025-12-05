@@ -13,7 +13,7 @@ class Home
         $content = Content::make()
             ->body(Grid::make([
                 GridItem::make('功能1'),
-                GridItem::make('退出','/h5/login/logout','close'),
+                GridItem::make('退出2','/flexwire/h5/login/logout','close'),
             ],2));
         $content->render();
         return $content;

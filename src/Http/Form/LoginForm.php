@@ -19,7 +19,7 @@ class LoginForm extends Form implements FormInterface
             'username' => $username,
             'password' => $password,
         ])){
-            return $this->success('登录成功','/h5/home/index');
+            return $this->success('登录成功','/flexwire/h5/home/index');
         }
 
 

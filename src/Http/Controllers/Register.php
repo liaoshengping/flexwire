@@ -39,9 +39,9 @@ class Register
         }
         $content->block();
         if ($email) {
-            $content->add(Button::make('重新获取验证码')->typeInfo()->plain()->href('/h5/register/emailRegister'));
+            $content->add(Button::make('重新获取验证码')->typeInfo()->plain()->href('/flexwire/h5/register/emailRegister'));
         }
-        $content->add(Button::make('已有账号？去登录')->typeInfo()->plain()->href('/h5/login/index'));
+        $content->add(Button::make('已有账号？去登录')->typeInfo()->plain()->href('/flexwire/h5/login/index'));
         return $content;
     }
 
