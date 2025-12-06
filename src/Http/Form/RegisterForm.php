@@ -38,7 +38,6 @@ class RegisterForm extends RegisterEmailForm implements FormInterface
             'username' => $this->email,
             'name' => '用户',
             'password' => bcrypt(request()->input('password')),
-            'merchant_id' => 22,
         ]);
 
 
