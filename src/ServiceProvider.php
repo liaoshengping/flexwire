@@ -15,6 +15,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([__DIR__.'/../resources/config' => config_path()], 'flexwire-config');
             $this->publishes([__DIR__.'/../resources/dist' =>  public_path('vendor/flexware'),], 'flexwire-assets');
+            $this->publishes([__DIR__.'/../resources/app' =>  app_path('FlexWire'),], 'flexwire-app');
         }
         $router->aliasMiddleware('flexwire.auth', \Liaosp\Flexwire\Http\Middleware\H5Auth::class);
     }
@@ -31,7 +32,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     private function registerRoute(){
         Route::group($this->routeConfiguration(),function (){
-            $this->loadRoutesFrom(__DIR__.'/Http/routes.php');
+            $this->loadRoutesFrom(app_path('FlexWire/routes.php'));
         });
     }
 
