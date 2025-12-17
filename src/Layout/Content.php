@@ -177,19 +177,13 @@ HTML;
                                 $toast = '$toast';
                                 self::$method .= <<<TEXT
 {$functionName}(class_name) {
-const postData = {
-                class_name: class_name,
-            };
+        const postData = {
+                        class_name: class_name,
+                    };
 
-      allData = this.getData();
-      newData = {...postData,...allData}
-      that = this
-
-            this.$toast.loading({
-  message: '加载中...',
-  forbidClick: true,
-});
-
+        allData = this.getData();
+        newData = {...postData,...allData}
+        that = this
 
 
 
@@ -200,6 +194,13 @@ const postData = {
                     title: '提示',
                     message: "$confirm",
                 }).then(() => {
+
+
+                this.$toast.loading({
+                      message: '加载中...',
+                      forbidClick: true,
+                });
+
                  axios.post('/flexwire/get-service2', newData, {
     withCredentials: true
 })
@@ -221,6 +222,12 @@ const postData = {
                 });
                 });
             }else{
+
+                this.$toast.loading({
+                      message: '加载中...',
+                      forbidClick: true,
+                    });
+
                 axios.post('/flexwire/get-service2', newData, {
     withCredentials: true
 })
