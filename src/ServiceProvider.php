@@ -32,7 +32,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     private function registerRoute(){
         Route::group($this->routeConfiguration(),function (){
-            $this->loadRoutesFrom(app_path('FlexWire/routes.php'));
+            if (file_exists(app_path('FlexWire/routes.php'))){
+                $this->loadRoutesFrom(app_path('FlexWire/routes.php'));
+            }
         });
     }
 

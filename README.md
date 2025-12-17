@@ -14,6 +14,8 @@ $ composer require liaosp/flexwire -vvv
 ````
 php artisan vendor:publish --tag=flexwire-assets
 php artisan vendor:publish --tag=flexwire-config
+php artisan vendor:publish --tag=flexwire-app
+
 ````
 
 
